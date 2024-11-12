@@ -8,20 +8,19 @@ const images = [
 ];
 
 btn.addEventListener('click', () => {
-  output.innerHTML = ''; // Clear any existing images
+  output.innerHTML = '';
 
-  // Create an array of promises
-  const fetchPromises = images.map((image) => 
+  const fetchPromises = images.map((image) =>
     fetch(image.url)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
         }
-        return res.blob(); // Get image data as a blob
+        return res.blob();
       })
       .then(data => {
-        const imageUrl = URL.createObjectURL(data); // Create a temporary URL for the binary data
-        return imageUrl; // Return the image URL for later use
+        const imageUrl = image.url;
+        return imageUrl;
       })
   );
 
@@ -29,9 +28,10 @@ btn.addEventListener('click', () => {
     .then(imageUrls => {
       imageUrls.forEach(imageUrl => {
         const img = document.createElement('img');
-        img.src = imageUrl; 
-        img.style.margin = '10px'; 
-        output.appendChild(img); 
+        img.src = imageUrl;
+        img.style.width = '200px';
+        img.style.margin = '10px';
+        output.appendChild(img);
       });
     })
     .catch((error) => console.error('Error downloading images:', error));
